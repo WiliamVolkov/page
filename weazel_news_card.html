@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WEAZEL NEWS — SIN RASTRO</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Source+Sans+3:wght@300;400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #e8000a;
+    --dark-red: #9b0007;
+    --gold: #f5c518;
+    --white: #f0f0f0;
+    --black: #0a0a0a;
+    --gray: #1a1a1a;
+    --mid-gray: #2e2e2e;
+    --text-gray: #aaa;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Source Sans 3', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* SCANLINES overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  /* TOP TICKER */
+  .ticker-bar {
+    background: var(--red);
+    padding: 6px 0;
+    overflow: hidden;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .ticker-inner {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+  .ticker-label {
+    background: var(--black);
+    color: var(--gold);
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 2px 14px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .ticker-scroll {
+    overflow: hidden;
+    flex: 1;
+  }
+  .ticker-text {
+    display: inline-block;
+    white-space: nowrap;
+    font-family: 'Oswald', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: white;
+    animation: scroll-ticker 30s linear infinite;
+    padding-left: 100%;
+  }
+  @keyframes scroll-ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+  }
+
+  /* HEADER */
+  header {
+    background: var(--gray);
+    border-bottom: 3px solid var(--red);
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .logo-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--red);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: white;
+    clip-path: polygon(0 0, 90% 0, 100% 50%, 90% 100%, 0 100%);
+  }
+  .logo-text h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: var(--white);
+    text-transform: uppercase;
+  }
+  .logo-text span {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--text-gray);
+    text-transform: uppercase;
+  }
+  .live-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--red);
+    padding: 6px 16px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+  }
+  .live-dot {
+    width: 8px; height: 8px;
+    background: white;
+    border-radius: 50%;
+    animation: pulse 1s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    background: linear-gradient(135deg, #0d0d0d 0%, #1a0000 50%, #0d0d0d 100%);
+    padding: 60px 40px 40px;
+    overflow: hidden;
+    border-bottom: 1px solid #2a2a2a;
+  }
+  .hero::after {
+    content: 'W';
+    position: absolute;
+    right: -30px;
+    top: -40px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 400px;
+    font-weight: 700;
+    color: rgba(232, 0, 10, 0.04);
+    line-height: 1;
+    pointer-events: none;
+  }
+  .breaking-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--red);
+    color: white;
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    padding: 4px 12px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+  .hero-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(48px, 8vw, 96px);
+    font-weight: 700;
+    line-height: 0.9;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    color: white;
+    position: relative;
+  }
+  .hero-title .accent {
+    color: var(--red);
+    display: block;
+  }
+  .hero-subtitle {
+    margin-top: 20px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 16px;
+    color: var(--text-gray);
+    font-weight: 300;
+    letter-spacing: 1px;
+    max-width: 600px;
+    line-height: 1.6;
+  }
+  .meta-row {
+    margin-top: 30px;
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .meta-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--red);
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .meta-value {
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--white);
+  }
+
+  /* MAIN CONTENT */
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 50px 40px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 30px;
+  }
+  .section-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--mid-gray), transparent);
+  }
+  .section-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: var(--red);
+    text-transform: uppercase;
+  }
+
+  /* ACTS */
+  .acts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2px;
+    margin-bottom: 60px;
+  }
+  .act-card {
+    background: var(--gray);
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s;
+  }
+  .act-card:hover { background: var(--mid-gray); }
+  .act-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--red);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .act-card:hover::before { opacity: 1; }
+  .act-number {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--red);
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+  .act-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .act-desc {
+    font-size: 13px;
+    color: var(--text-gray);
+    line-height: 1.6;
+  }
+  .act-time {
+    margin-top: 14px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: #555;
+  }
+
+  /* CHARACTERS */
+  .chars-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 2px;
+    margin-bottom: 60px;
+  }
+  .char-card {
+    background: var(--gray);
+    padding: 22px;
+    border-top: 2px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .char-card:hover { border-color: var(--red); }
+  .char-status {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .char-status.alive { color: #4caf50; }
+  .char-status.dead { color: var(--red); }
+  .char-status.unknown { color: var(--gold); }
+  .char-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .char-role {
+    font-size: 11px;
+    color: var(--text-gray);
+    line-height: 1.5;
+  }
+
+  /* QUOTE BLOCK */
+  .quote-block {
+    background: var(--gray);
+    border-left: 4px solid var(--red);
+    padding: 30px 36px;
+    margin: 50px 0;
+    position: relative;
+  }
+  .quote-block::before {
+    content: '"';
+    position: absolute;
+    top: -10px; left: 20px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 80px;
+    color: var(--red);
+    opacity: 0.3;
+    line-height: 1;
+  }
+  .quote-text {
+    font-family: 'Oswald', sans-serif;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--white);
+    font-style: italic;
+  }
+  .quote-attr {
+    margin-top: 12px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--red);
+    letter-spacing: 2px;
+  }
+
+  /* LOCATIONS */
+  .locations-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 2px;
+    margin-bottom: 60px;
+  }
+  .loc-item {
+    background: var(--gray);
+    padding: 18px 22px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .loc-icon {
+    width: 32px; height: 32px;
+    background: var(--red);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .loc-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .loc-desc {
+    font-size: 11px;
+    color: var(--text-gray);
+    margin-top: 3px;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--gray);
+    border-top: 3px solid var(--red);
+    padding: 24px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: gap;
+  }
+  .footer-logo {
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: var(--text-gray);
+  }
+  .footer-logo span { color: var(--red); }
+  .footer-copy {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: #444;
+    letter-spacing: 1px;
+  }
+
+  /* TWIST BOX */
+  .twist-box {
+    background: linear-gradient(135deg, #1a0000, #0d0000);
+    border: 1px solid var(--red);
+    padding: 36px;
+    margin: 50px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .twist-box::after {
+    content: '⚠';
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 80px;
+    opacity: 0.06;
+  }
+  .twist-tag {
+    font-family: 'Oswald', sans-serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--red);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+  .twist-text {
+    font-family: 'Oswald', sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--white);
+  }
+  .twist-text strong { color: var(--gold); }
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker-bar">
+  <div class="ticker-inner">
+    <div class="ticker-label">BREAKING</div>
+    <div class="ticker-scroll">
+      <span class="ticker-text">
+        EJECUTIVO DE MAZE BANK HALLADO MUERTO EN ROCKFORD HILLS &nbsp;●&nbsp; 
+        POLICÍA CONFIRMA "SUICIDIO" SIN INVESTIGACIÓN ABIERTA &nbsp;●&nbsp; 
+        PERIODISTA CHAD MULLIGAN SUSPENDIDO POR WEAZEL NEWS &nbsp;●&nbsp; 
+        FUENTES SEÑALAN NEXOS ENTRE MAZE BANK Y CARTEL MADRAZO &nbsp;●&nbsp; 
+        DETECTIVE RAY HOLT SE NIEGA A DAR DECLARACIONES &nbsp;●&nbsp;
+        CORTOMETRAJE GTA V — "SIN RASTRO" — GUIÓN COMPLETO
+      </span>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo-area">
+    <div class="logo-icon">W</div>
+    <div class="logo-text">
+      <h1>Weazel News</h1>
+      <span>Los Santos Broadcasting Corp. — GTA V Machinima</span>
+    </div>
+  </div>
+  <div class="live-badge">
+    <div class="live-dot"></div>
+    EN VIVO
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="breaking-tag">
+    <span>●</span> CORTOMETRAJE ORIGINAL
+  </div>
+  <h2 class="hero-title">
+    Sin
+    <span class="accent">Rastro</span>
+  </h2>
+  <p class="hero-subtitle">
+    Un periodista. Un ejecutivo muerto. Una conspiración que llega hasta las más altas esferas de Los Santos. Todo visto desde la cámara de Weazel News.
+  </p>
+  <div class="meta-row">
+    <div class="meta-item">
+      <span class="meta-label">Duración</span>
+      <span class="meta-value">8–12 min</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Género</span>
+      <span class="meta-value">Suspenso · Drama</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Formato</span>
+      <span class="meta-value">Noticieros en Vivo</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Plataforma</span>
+      <span class="meta-value">GTA V Machinima</span>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main>
+
+  <!-- ACTS -->
+  <div class="section-header">
+    <span class="section-label">Estructura Narrativa</span>
+  </div>
+  <div class="acts-grid">
+    <div class="act-card">
+      <div class="act-number">// APERTURA</div>
+      <div class="act-title">Transmisión En Vivo</div>
+      <div class="act-desc">Melissa Vance presenta desde el estudio. Chad Mulligan aparece en escena desde Rockford Hills. Algo no cierra con la versión oficial.</div>
+      <div class="act-time">00:00 — 00:45</div>
+    </div>
+    <div class="act-card">
+      <div class="act-number">// ACTO I</div>
+      <div class="act-title">La Escena del Crimen</div>
+      <div class="act-desc">Chad observa detalles que contradicen el suicidio. La cámara capta accidentalmente un auto negro sin placas. El detective Holt los empuja fuera del perímetro.</div>
+      <div class="act-time">00:45 — 03:00</div>
+    </div>
+    <div class="act-card">
+      <div class="act-number">// ACTO II</div>
+      <div class="act-title">La Fuente Anónima</div>
+      <div class="act-desc">Chad recibe un mensaje misterioso que menciona una auditoría y un nombre: Madrazo. El estudio debate los vínculos financieros del ejecutivo asesinado.</div>
+      <div class="act-time">03:00 — 05:30</div>
+    </div>
+    <div class="act-card">
+      <div class="act-number">// ACTO III</div>
+      <div class="act-title">El Detective y el Banco</div>
+      <div class="act-desc">Chad filma al Det. Holt saliendo de Maze Bank en ropa civil. Su editor le pide que pare. Alguien llamó "desde arriba". El caso fue cerrado antes de abrirse.</div>
+      <div class="act-time">05:30 — 08:30</div>
+    </div>
+    <div class="act-card">
+      <div class="act-number">// CLÍMAX</div>
+      <div class="act-title">La Transmisión Prohibida</div>
+      <div class="act-desc">Chad transmite en vivo sin autorización. Nombra a Holt, a Maze Bank, al cartel Madrazo. Un auto negro aparece detrás de él. La señal se corta. Pantalla estática.</div>
+      <div class="act-time">08:30 — 10:30</div>
+    </div>
+    <div class="act-card">
+      <div class="act-number">// EPÍLOGO</div>
+      <div class="act-title">Continuamos</div>
+      <div class="act-desc">Melissa reporta la "suspensión" de Chad con frialdad absoluta. El caso se cierra oficialmente. Texto final: Chad desapareció tres días después.</div>
+      <div class="act-time">10:30 — 11:30</div>
+    </div>
+  </div>
+
+  <!-- QUOTE -->
+  <div class="quote-block">
+    <p class="quote-text">En esta ciudad, todo se cierra.<br>Hasta las personas.</p>
+    <div class="quote-attr">— CHAD MULLIGAN · WEAZEL NEWS · TRANSMISIÓN NO AUTORIZADA</div>
+  </div>
+
+  <!-- CHARACTERS -->
+  <div class="section-header">
+    <span class="section-label">Personajes</span>
+  </div>
+  <div class="chars-grid">
+    <div class="char-card">
+      <div class="char-status alive">● ACTIVO</div>
+      <div class="char-name">Chad Mulligan</div>
+      <div class="char-role">Reportero estrella. Ambicioso y desconfiado. Ve demasiado para su propio bien.</div>
+    </div>
+    <div class="char-card">
+      <div class="char-status alive">● ACTIVA</div>
+      <div class="char-name">Melissa Vance</div>
+      <div class="char-role">Presentadora. Fría. Corporativa. Sabe más de lo que dice al aire.</div>
+    </div>
+    <div class="char-card">
+      <div class="char-status dead">✕ VÍCTIMA</div>
+      <div class="char-name">Victor Salinas</div>
+      <div class="char-role">VP de Maze Bank. 52 años. Habló con Fiscalía. No llegó al día siguiente.</div>
+    </div>
+    <div class="char-card">
+      <div class="char-status alive">● CORRUPTO</div>
+      <div class="char-name">Det. Ray Holt</div>
+      <div class="char-role">Detective del LSPD asignado al caso. Tiene reuniones privadas en Maze Bank.</div>
+    </div>
+    <div class="char-card">
+      <div class="char-status unknown">? ANÓNIMO</div>
+      <div class="char-name">La Fuente</div>
+      <div class="char-role">Soplón desconocido. Envía un mensaje. Da el nombre de Madrazo. Desaparece.</div>
+    </div>
+    <div class="char-card">
+      <div class="char-status unknown">? EN LAS SOMBRAS</div>
+      <div class="char-name">Sicario Madrazo</div>
+      <div class="char-role">Aparece en el clímax. Sin palabras. Solo un auto negro y una pantalla cortada.</div>
+    </div>
+  </div>
+
+  <!-- LOCATIONS -->
+  <div class="section-header">
+    <span class="section-label">Locaciones en GTA V</span>
+  </div>
+  <div class="locations-list">
+    <div class="loc-item">
+      <div class="loc-icon">🏚</div>
+      <div>
+        <div class="loc-name">Rockford Hills</div>
+        <div class="loc-desc">Escena del crimen. Mansiones del norte, calles oscuras.</div>
+      </div>
+    </div>
+    <div class="loc-item">
+      <div class="loc-icon">📺</div>
+      <div>
+        <div class="loc-name">Weazel News HQ</div>
+        <div class="loc-desc">Interior del edificio en Mission Row. Estudio del canal.</div>
+      </div>
+    </div>
+    <div class="loc-item">
+      <div class="loc-icon">🏦</div>
+      <div>
+        <div class="loc-name">Maze Bank Tower</div>
+        <div class="loc-desc">Fachada del banco. Confrontación y transmisión final.</div>
+      </div>
+    </div>
+    <div class="loc-item">
+      <div class="loc-icon">🚗</div>
+      <div>
+        <div class="loc-name">Calles del Downtown</div>
+        <div class="loc-desc">Noche. Lluvia opcional. El auto negro aparece aquí.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TWIST -->
+  <div class="twist-box">
+    <div class="twist-tag">// PUNTO CLAVE DEL GUIÓN</div>
+    <div class="twist-text">
+      El poderío narrativo está en que <strong>Weazel News es parte del problema</strong>. No son héroes. El canal recibe una llamada y cierra el tema. Melissa lo dice sin titubear. El verdadero horror no es el crimen — es que <strong>el sistema funciona exactamente como está diseñado</strong>.
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo"><span>WEAZEL</span> NEWS · LOS SANTOS</div>
+  <div class="footer-copy">© WEAZEL BROADCASTING CORP. — GUIÓN: "SIN RASTRO" — GTA V MACHINIMA</div>
+</footer>
+
+</body>
+</html>
